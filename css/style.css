@@ -1,17 +1,16 @@
 /*fonts links*/
-@font-face{
-	src: url();
-	font-family: ;
+.inter-font {
+  font-family: "Inter", sans-serif;
 }
-@font-face{
-	src: url();
-	font-family: ;
+
+
+.nav-button,
+.banner-button{
+  transition: 0.33s linear;
 }
-@font-face{
-	src: url();
-	font-family: ;
+.nav-button:hover{
+  transform: scale(1.1);
 }
-@font-face{
-	src: url();
-	font-family: ;
+.banner-button:hover{
+  transform: scale(1.1);
 }

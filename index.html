@@ -5,10 +5,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
+
 	<!-- font links -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+		rel="stylesheet">
 
 	<!-- icon links -->
-	 <link rel="stylesheet" href="./vendor/fontawesome/css/all.min.css">
+	<link rel="stylesheet" href="./vendor/fontawesome/css/all.min.css">
 
 	<!-- css links -->
 	<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
@@ -19,7 +25,78 @@
 
 <body>
 
+	<!-- header start -->
+	<header>
 
+		<!-- nav -->
+		<nav class="bg-[#15803D] py-1">
+			<div class="navbar container mx-auto">
+
+				<!-- nav start -->
+				<div class="navbar-start">
+
+					<!-- nav dropdown -->
+					<div class="dropdown">
+						<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+								stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M4 6h16M4 12h8m-8 6h16" />
+							</svg>
+						</div>
+						<ul tabindex="0"
+							class="menu menu-sm dropdown-content bg-[#15803D] rounded-box z-1 mt-3 w-52 p-2">
+							<li><a class="inter-font text-white" href="#">About</a></li>
+							<li><a class="inter-font text-white" href="#">Gallery</a></li>
+							<li><a class="inter-font text-white" href="#">Plant a Tree</a></li>
+						</ul>
+					</div>
+					<!-- nav dropdown -->
+
+					<a href="index.html" class="inter-font text-[1.2rem] font-bold text-white">Green Earth</a>
+				</div>
+				<!-- nav start -->
+
+				<!-- nav center -->
+				<div class="navbar-center hidden lg:flex">
+					<ul class="menu menu-horizontal px-1">
+						<li><a class="inter-font text-white" href="#">About</a></li>
+						<li><a class="inter-font text-white" href="#">Gallery</a></li>
+						<li><a class="inter-font text-white" href="#">Plant a Tree</a></li>
+					</ul>
+				</div>
+				<!-- nav center -->
+
+				<!-- nav end -->
+				<div class="navbar-end">
+					<button class="nav-button cursor-pointer py-[8px] px-[20px] bg-[#FACC15] inter-font text-[1rem] font-[500] text-[#15803D] rounded-full hover:bg-white hover:font-bold">Plant a Tree</button>
+				</div>
+				<!-- nav end -->
+
+			</div>
+		</nav>
+		<!-- nav -->
+
+		<!-- banner start -->
+		<section class="banner bg-[#CFF0DC] pt-2 px-2">
+			<div class="container mx-auto md:flex justify-around items-center">
+				<div class="left-img">
+					<img src="./assets/hero-leaf1.png" alt="">
+				</div>
+				<div class="banner-content text-center md:mt-0 mt-4">
+					<h1 class="inter-font text-[48px] font-bold text-[#1F2937] leading-[60px]">Plant a Tree, Grow a Future</h1>
+					<p class="inter-font text-[16px] text-[#1F2937] font-[400] mt-[8px] mb-[15px]">Join our mission to plant 1 million trees and make the Earth greener for future generations.</p>
+					<button class="banner-button cursor-pointer py-[8px] px-[20px] bg-[#FACC15] inter-font text-[1rem] font-[500] text-[#15803D] rounded-full hover:bg-white hover:font-bold">Plant a Tree</button>
+				</div>
+				<div class="right-img">
+					<img src="./assets/hero-leaf2.png" alt="">
+				</div>
+			</div>
+		</section>
+		<!-- banner end -->
+
+	</header>
+	<!-- header end -->
 
 	<!-- js links -->
 	<script src="./js/script.js"></script>
