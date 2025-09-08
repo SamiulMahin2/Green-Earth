@@ -1,6 +1,15 @@
 let categoryBtnContainer = document.getElementById("category-button-container");
 let allPlantsCardsContainer = document.getElementById("cards-container");
 
+//preloader 
+let preLoader = () => {
+    allPlantsCardsContainer.innerHTML = `
+                <div class="col-start-2 flex justify-center items-center">
+					<span id="loading" class="loading loading-dots loading-xl"></span>		
+				</div>
+    `;
+}
+
 //load all categories button
 let loadCategoriesBtn = () => {
     fetch("https://openapi.programming-hero.com/api/categories")
@@ -69,6 +78,7 @@ categoryBtnContainer.addEventListener("click", (event) => {
         let button = event.target;
         button.classList.add("text-white");
         button.classList.add("bg-[#15803D]");
+        preLoader();
         loadTreesByCategory(event.target.id);
     }
 })
@@ -79,7 +89,12 @@ let loadTreesByCategory = (treeCategoryId) => {
         .then(res => res.json())
         .then(data => {
             showTreesByCategory(data.plants);
+            removeFromCart(data.plants);
         })
+}
+
+//remove from cart
+let removeFromCart = (tree) => {
 }
 
 //show trees by category
@@ -127,7 +142,7 @@ allPlantsCardsContainer.addEventListener("click", (event) => {
 								<p class="inter-font text-[16px] font-[400] text-[#1F2937]">৳${productPrice} x 1</p>
 							</div>
 							<div class="single-cart-icon">
-								<i class="fa-solid fa-xmark text-[16px] text-[#8C8C8C] cursor-pointer"></i>
+								<i onclick="removeFromCart()" class="fa-solid fa-xmark text-[16px] text-[#8C8C8C] cursor-pointer"></i>
 							</div>
 						</div>
         `
@@ -136,4 +151,3 @@ allPlantsCardsContainer.addEventListener("click", (event) => {
 
 loadCategoriesBtn();
 loadAllTrees();
-// loadTreesByCategory(1);
