@@ -4,18 +4,19 @@ let allPlantsCardsContainer = document.getElementById("cards-container");
 //load all categories button
 let loadCategoriesBtn = () => {
     fetch("https://openapi.programming-hero.com/api/categories")
-    .then (res => res.json())
-    .then (data => {
-        showCategoriesBtn(data.categories);
-    })
+        .then(res => res.json())
+        .then(data => {
+            showCategoriesBtn(data.categories);
+        })
 }
 
 //show all categories button
 let showCategoriesBtn = (categories) => {
+    categoryBtnContainer.innerHTML = "";
     categories.forEach(category => {
         categoryBtnContainer.innerHTML += `
-                        <div class="single-button">
-							<button class="text-[16px] font-[500] text-[#1F2937] hover:text-white hover:bg-[#15803D] py-[8px] px-[10px] w-full duration-[0.33s] ease-linear text-center md:text-left rounded-[4px] cursor-pointer mb-[8px]">${category.category_name}</button>
+                        <div>
+							<button class="single-button text-[16px] font-[500] text-[#1F2937] hover:text-white hover:bg-[#15803D] py-[8px] px-[10px] w-full duration-[0.33s] ease-linear text-center md:text-left rounded-[4px] cursor-pointer mb-[8px]">${category.category_name}</button>
 						</div>
         `
     });
@@ -24,10 +25,10 @@ let showCategoriesBtn = (categories) => {
 //load all trees
 let loadAllTrees = () => {
     fetch("https://openapi.programming-hero.com/api/plants")
-    .then (res => res.json())
-    .then (data => {
-        showAllTrees(data.plants);
-    })
+        .then(res => res.json())
+        .then(data => {
+            showAllTrees(data.plants);
+        })
 }
 
 //show all trees 
@@ -47,15 +48,54 @@ let showAllTrees = (trees) => {
 							</div>
 							<div class="card-price-tag flex items-center justify-between mb-[12px]">
 								<p class="inter-font text-[14px] font-[500] text-[#15803D] p-[5px] bg-[#DCFCE7] rounded-full">${tree.category}</p>
-								<p class="inter-font text-[14px] font-[600] text-[#1F2937]">৳${tree.price}</p>
+								<p class="inter-font text-[14px] font-[600] text-[#1F2937]">৳<span>${tree.price}</span></p>
 							</div>
 							<div class="card-button">
-								<button class="text-[16px] font-[500] text-white bg-[#15803D] py-[8px] px-[10px] w-full rounded-full cursor-pointer">Add to Cart</button>
+								<button class="add-to-cart-btn text-[16px] font-[500] text-white bg-[#15803D] py-[8px] px-[10px] w-full rounded-full cursor-pointer">Add to Cart</button>
 							</div>
 						</div>
         `
     })
 }
+
+//highlight the category buttons after clicking
+categoryBtnContainer.addEventListener("click", (event) => {
+    let buttons = document.querySelectorAll(".single-button");
+    buttons.forEach(btn => {
+        btn.classList.remove("text-white");
+        btn.classList.remove("bg-[#15803D]");
+    })
+    if (event.target.querySelectorAll(".single-button")) {
+        let button = event.target;
+        button.classList.add("text-white");
+        button.classList.add("bg-[#15803D]");
+    }
+})
+
+//add to cart buttons functionality 
+allPlantsCardsContainer.addEventListener("click", (event) => {
+    if(event.target.querySelectorAll(".add-to-cart-btn")){
+        let addBtn = event.target;
+        let cartPrice = Number(document.getElementById("cart-total-price").innerText);
+        let productPrice = Number(addBtn.parentNode.parentNode.children[3].children[1].children[0].innerText);
+        let treeName = addBtn.parentNode.parentNode.children[1].children[0].innerText;
+        let totalPrice = productPrice + cartPrice;
+        document.getElementById("cart-total-price").innerText = totalPrice;
+
+        let singleCartContainer = document.getElementById("single_cart_container");
+        singleCartContainer.innerHTML += `
+                        <div class="single-cart bg-[#F0FDF4] flex items-center justify-between py-[8px] px-[12px] rounded-[8px] my-[8px]">
+							<div class="single-cart-content">
+								<h1 class="inter-font text-[14px] font-[600] text-[#1F2937] mb-[8px]">${treeName}</h1>
+								<p class="inter-font text-[16px] font-[400] text-[#1F2937]">৳${productPrice} x 1</p>
+							</div>
+							<div class="single-cart-icon">
+								<i class="fa-solid fa-xmark text-[16px] text-[#8C8C8C] cursor-pointer"></i>
+							</div>
+						</div>
+        `
+    };
+})
 
 loadCategoriesBtn();
 loadAllTrees();
