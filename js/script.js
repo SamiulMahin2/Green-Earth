@@ -16,7 +16,7 @@ let showCategoriesBtn = (categories) => {
     categories.forEach(category => {
         categoryBtnContainer.innerHTML += `
                         <div>
-							<button class="single-button text-[16px] font-[500] text-[#1F2937] hover:text-white hover:bg-[#15803D] py-[8px] px-[10px] w-full duration-[0.33s] ease-linear text-center md:text-left rounded-[4px] cursor-pointer mb-[8px]">${category.category_name}</button>
+							<button id="${category.id}" class="single-category-button text-[16px] font-[500] text-[#1F2937] hover:text-white hover:bg-[#15803D] py-[8px] px-[10px] w-full duration-[0.33s] ease-linear text-center md:text-left rounded-[4px] cursor-pointer mb-[8px]">${category.category_name}</button>
 						</div>
         `
     });
@@ -60,21 +60,58 @@ let showAllTrees = (trees) => {
 
 //highlight the category buttons after clicking
 categoryBtnContainer.addEventListener("click", (event) => {
-    let buttons = document.querySelectorAll(".single-button");
+    let buttons = document.querySelectorAll(".single-category-button");
     buttons.forEach(btn => {
         btn.classList.remove("text-white");
         btn.classList.remove("bg-[#15803D]");
     })
-    if (event.target.querySelectorAll(".single-button")) {
+    if (event.target.querySelectorAll(".single-category-button")) {
         let button = event.target;
         button.classList.add("text-white");
         button.classList.add("bg-[#15803D]");
+        loadTreesByCategory(event.target.id);
     }
 })
 
+//load trees by category
+let loadTreesByCategory = (treeCategoryId) => {
+    fetch(`https://openapi.programming-hero.com/api/category/${treeCategoryId}`)
+        .then(res => res.json())
+        .then(data => {
+            showTreesByCategory(data.plants);
+        })
+}
+
+//show trees by category
+let showTreesByCategory = (tree) => {
+    allPlantsCardsContainer.innerHTML = "";
+    tree?.forEach(t => {
+        allPlantsCardsContainer.innerHTML += `
+                        <div class="single-card bg-white p-[16px] rounded-[8px] flex flex-col">
+							<div class="card-image">
+								<img class="h-64 object-cover w-full rounded-[8px]" src="${t.image}" alt="">
+							</div>
+							<div class="card-heading flex-1">
+								<h1 class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px]">${t.name}</h1>
+							</div>
+							<div class="card-description flex-1">
+								<p class="inter-font text-[12px] font-[400] text-[#1F2937] my-[8px]">${t.description}</p>
+							</div>
+							<div class="card-price-tag flex items-center justify-between mb-[12px]">
+								<p class="inter-font text-[14px] font-[500] text-[#15803D] p-[5px] bg-[#DCFCE7] rounded-full">${t.category}</p>
+								<p class="inter-font text-[14px] font-[600] text-[#1F2937]">৳<span>${t.price}</span></p>
+							</div>
+							<div class="card-button">
+								<button class="add-to-cart-btn text-[16px] font-[500] text-white bg-[#15803D] py-[8px] px-[10px] w-full rounded-full cursor-pointer">Add to Cart</button>
+							</div>
+						</div>
+        `
+    })
+}
+
 //add to cart buttons functionality 
 allPlantsCardsContainer.addEventListener("click", (event) => {
-    if(event.target.querySelectorAll(".add-to-cart-btn")){
+    if (event.target.querySelectorAll(".add-to-cart-btn")) {
         let addBtn = event.target;
         let cartPrice = Number(document.getElementById("cart-total-price").innerText);
         let productPrice = Number(addBtn.parentNode.parentNode.children[3].children[1].children[0].innerText);
@@ -99,13 +136,4 @@ allPlantsCardsContainer.addEventListener("click", (event) => {
 
 loadCategoriesBtn();
 loadAllTrees();
-
-
-// {
-//     "id": 1,
-//     "image": "https://i.ibb.co.com/cSQdg7tf/mango-min.jpg",
-//     "name": "Mango Tree",
-//     "description": "A fast-growing tropical tree that produces delicious, juicy mangoes during summer. Its dense green canopy offers shade, while its sweet fruits are rich in vitamins and minerals.",
-//     "category": "Fruit Tree",
-//     "price": 500
-// }
+// loadTreesByCategory(1);
