@@ -50,7 +50,7 @@ let showAllTrees = (trees) => {
 								<img class="h-64 object-cover w-full rounded-[8px]" src="${tree.image}" alt="">
 							</div>
 							<div class="card-heading flex-1">
-								<h1 class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px]">${tree.name}</h1>
+								<h1 onclick="loadTreeDetails(${tree.id})" class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px] cursor-pointer">${tree.name}</h1>
 							</div>
 							<div class="card-description flex-1">
 								<p class="inter-font text-[12px] font-[400] text-[#1F2937] my-[8px]">${tree.description}</p>
@@ -89,25 +89,20 @@ let loadTreesByCategory = (treeCategoryId) => {
         .then(res => res.json())
         .then(data => {
             showTreesByCategory(data.plants);
-            removeFromCart(data.plants);
         })
-}
-
-//remove from cart
-let removeFromCart = (tree) => {
 }
 
 //show trees by category
 let showTreesByCategory = (tree) => {
     allPlantsCardsContainer.innerHTML = "";
-    tree?.forEach(t => {
+    tree.forEach(t => {
         allPlantsCardsContainer.innerHTML += `
                         <div class="single-card bg-white p-[16px] rounded-[8px] flex flex-col">
 							<div class="card-image">
 								<img class="h-64 object-cover w-full rounded-[8px]" src="${t.image}" alt="">
 							</div>
 							<div class="card-heading flex-1">
-								<h1 class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px]">${t.name}</h1>
+								<h1 onclick="loadTreeDetails(${t.id})" class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px] cursor-pointer">${t.name}</h1>
 							</div>
 							<div class="card-description flex-1">
 								<p class="inter-font text-[12px] font-[400] text-[#1F2937] my-[8px]">${t.description}</p>
@@ -124,16 +119,49 @@ let showTreesByCategory = (tree) => {
     })
 }
 
+//load tree details 
+let loadTreeDetails = (treeId) => {
+    fetch(`https://openapi.programming-hero.com/api/plant/${treeId}`)
+        .then(res => res.json())
+        .then(data => {
+            showTreeDetails(data.plants);
+        })
+}
+
+//show tree details
+let showTreeDetails = (details) => {
+    document.getElementById("modal-container").innerHTML = `
+                        <div class="single-card bg-white p-[16px] rounded-[8px] flex flex-col">
+							<div class="card-image">
+								<img class="h-64 object-cover w-full rounded-[8px]" src="${details.image}" alt="">
+							</div>
+							<div class="card-heading flex-1">
+								<h1 class="inter-font text-[14px] font-[600] text-[#1F2937] mt-[12px] cursor-pointer">${details.name}</h1>
+							</div>
+							<div class="card-description flex-1">
+								<p class="inter-font text-[12px] font-[400] text-[#1F2937] my-[8px]">${details.description}</p>
+							</div>
+							<div class="card-price-tag flex items-center justify-between mb-[12px]">
+								<p class="inter-font text-[14px] font-[500] text-[#15803D] p-[5px] bg-[#DCFCE7] rounded-full">${details.category}</p>
+								<p class="inter-font text-[14px] font-[600] text-[#1F2937]">৳<span>${details.price}</span></p>
+							</div>
+						</div>
+        `;
+    document.getElementById("my_word_details_modal").showModal();
+
+}
+
 //add to cart buttons functionality 
 allPlantsCardsContainer.addEventListener("click", (event) => {
-    if (event.target.querySelectorAll(".add-to-cart-btn")) {
+    if (event.target.classList.contains("add-to-cart-btn")) {
+        event.stopPropagation();
         let addBtn = event.target;
         let cartPrice = Number(document.getElementById("cart-total-price").innerText);
         let productPrice = Number(addBtn.parentNode.parentNode.children[3].children[1].children[0].innerText);
         let treeName = addBtn.parentNode.parentNode.children[1].children[0].innerText;
         let totalPrice = productPrice + cartPrice;
         document.getElementById("cart-total-price").innerText = totalPrice;
-
+        alert(`${treeName} has added to the cart😃`);
         let singleCartContainer = document.getElementById("single_cart_container");
         singleCartContainer.innerHTML += `
                         <div class="single-cart bg-[#F0FDF4] flex items-center justify-between py-[8px] px-[12px] rounded-[8px] my-[8px]">
